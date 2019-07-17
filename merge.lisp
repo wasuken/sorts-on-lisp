@@ -1,0 +1,26 @@
+(defun take (n lst)
+  (cond ((or (null lst) (<= n 0)) nil)
+		(t (cons (car lst) (take (1- n) (cdr lst))))))
+
+(defun drop (n lst)
+  (cond ((or (null lst) (<= n 0)) lst)
+		(t (drop (1- n) (cdr lst)))))
+
+(defun split (lst)
+  (let* ((left (floor (/ (length lst) 2))))
+	(cond ((<= (length lst) 1) lst)
+		  (t (append (list (take left lst)) (list (drop left lst)))))))
+
+(defun merge-sort (lst)
+  (cond ((>= (length lst) 2)
+		 (let* ((sp (split lst))
+				(right (merge-sort (car sp)))
+				(left (merge-sort (nth 1 sp))))
+		   (m-sort (merge-sort right) (merge-sort left))))
+		(t lst)))
+
+(defun m-sort (a b)
+    (cond ((null a) b)
+		  ((null b) a)
+		  ((> (car a) (car b)) (cons (car b) (m-sort a (cdr b))))
+		  (t (cons (car a) (m-sort (cdr a) b)))))
